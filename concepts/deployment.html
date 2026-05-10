@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deployment - AInTandem Orchestrator LLM Wiki</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f5f5f5;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 280px;
+      background: #1a1a2e;
+      color: #fff;
+      padding: 2rem 1rem;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar h1 {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: #4ade80;
+    }
+
+    .sidebar h2 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 1.5rem 0 0.5rem;
+      color: #888;
+    }
+
+    .nav-item {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      color: #ccc;
+      text-decoration: none;
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+      font-size: 0.875rem;
+    }
+
+    .nav-item:hover {
+      background: #2a2a4e;
+      color: #fff;
+    }
+
+    .nav-item.active {
+      background: #4ade80;
+      color: #1a1a2e;
+      font-weight: 500;
+    }
+
+    .main {
+      flex: 1;
+      margin-left: 280px;
+      padding: 3rem 4rem;
+      max-width: 900px;
+    }
+
+    .breadcrumb {
+      color: #666;
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .breadcrumb a {
+      color: #4ade80;
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #1a1a2e;
+    }
+
+    .meta {
+      color: #666;
+      font-size: 0.875rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .content {
+      font-size: 1rem;
+    }
+
+    .content h2 {
+      font-size: 1.5rem;
+      margin: 2rem 0 1rem;
+      color: #1a1a2e;
+    }
+
+    .content h3 {
+      font-size: 1.25rem;
+      margin: 1.5rem 0 0.75rem;
+      color: #1a1a2e;
+    }
+
+    .content p {
+      margin-bottom: 1rem;
+    }
+
+    .content ul, .content ol {
+      margin: 1rem 0 1rem 2rem;
+    }
+
+    .content li {
+      margin-bottom: 0.5rem;
+    }
+
+    .content code {
+      background: #f0f0f0;
+      padding: 0.2rem 0.4rem;
+      border-radius: 0.25rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.875rem;
+    }
+
+    .content pre {
+      background: #1a1a2e;
+      color: #f5f5f5;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    .content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+
+    .content a {
+      color: #4ade80;
+      text-decoration: none;
+    }
+
+    .content a:hover {
+      text-decoration: underline;
+    }
+
+    .content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    .content th, .content td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .content th {
+      background: #f0f0f0;
+      font-weight: 600;
+    }
+
+    .frontmatter {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+    }
+
+    .frontmatter-item {
+      display: flex;
+      margin-bottom: 0.5rem;
+    }
+
+    .frontmatter-label {
+      font-weight: 600;
+      min-width: 120px;
+      color: #166534;
+    }
+
+    .frontmatter-value {
+      color: #333;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 2rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h1>📚 LLM Wiki</h1>
+      <h2>Index</h2><a href="index/00-overview.html" class="nav-item ">Overview</a><a href="index/01-recent-changes.html" class="nav-item ">Recent Changes</a><a href="index/02-quick-reference.html" class="nav-item ">Quick Reference</a><h2>Concepts</h2><a href="concepts/contract-testing.html" class="nav-item ">Contract Testing</a><a href="concepts/deployment.html" class="nav-item active">Deployment</a><a href="concepts/task-progress-tracking.html" class="nav-item ">Task Progress Tracking</a><h2>Entities</h2><a href="entities/api-endpoints.html" class="nav-item ">API Endpoints</a><a href="entities/container-management.html" class="nav-item ">Container Management</a><h2>Summaries</h2><a href="summaries/api-change-notification-summary.html" class="nav-item ">API Change Notification Summary</a><a href="summaries/contract-testing-summary.html" class="nav-item ">Contract Testing Implementation Summary</a><a href="summaries/task-progress-implementation-summary.html" class="nav-item ">Task Progress Tracking Implementation Summary</a>
+    </aside>
+    <main class="main">
+      <nav class="breadcrumb">
+        <a href="index/00-overview.html">Wiki</a> &gt; Deployment
+      </nav>
+      <h1>Deployment</h1>
+      <div class="meta">
+        Type: <span style="background: #3b82f6; color: white; padding: 0.125rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem;">Concept</span> • Last Updated: 2026-05-10
+      </div>
+      <div class="frontmatter">
+        <div class="frontmatter-item">
+          <span class="frontmatter-label">Type:</span>
+          <span class="frontmatter-value">Concept</span>
+        </div>
+        <div class="frontmatter-item">
+          <span class="frontmatter-label">Last Updated:</span>
+          <span class="frontmatter-value">2026-05-10</span>
+        </div>
+      </div>
+      <div class="content">
+        <h1>Deployment</h1>
+<h2>Definition</h2>
+<p>Deployment refers to the process of making the CE Orchestrator application available for use, whether in development, staging, or production environments.</p>
+<h2>Prerequisites</h2>
+<h3>Required Software</h3>
+<table>
+<thead>
+<tr>
+<th>Software</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Node.js</td>
+<td>v22+</td>
+<td>Runtime environment</td>
+</tr>
+<tr>
+<td>pnpm</td>
+<td>v9+</td>
+<td>Package manager</td>
+</tr>
+<tr>
+<td>Docker</td>
+<td>v24+</td>
+<td>Container management</td>
+</tr>
+<tr>
+<td>Git</td>
+<td>-</td>
+<td>Version control</td>
+</tr>
+</tbody></table>
+<h3>System Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Minimum</th>
+<th>Recommended</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CPU</td>
+<td>2 cores</td>
+<td>4 cores</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>4GB</td>
+<td>8GB</td>
+</tr>
+<tr>
+<td>Storage</td>
+<td>20GB</td>
+<td>50GB</td>
+</tr>
+<tr>
+<td>Network</td>
+<td>Ports 9900, 8000</td>
+<td>Same</td>
+</tr>
+</tbody></table>
+<h2>Deployment Modes</h2>
+<h3>1. Development Deployment</h3>
+<h4>Docker Compose (Development)</h4>
+<pre><code class="language-bash"># Start with hot reload
+docker-compose -f docker-compose.dev.yml up --build
+
+# Run in detached mode
+docker-compose -f docker-compose.dev.yml up -d --build
+
+# View logs
+docker-compose -f docker-compose.dev.yml logs -f
+
+# Stop
+docker-compose -f docker-compose.dev.yml down
+</code></pre>
+<h4>Local Development</h4>
+<pre><code class="language-bash"># Terminal 1: Start API server
+pnpm dev
+
+# Terminal 2: Run tests
+pnpm test:unit:watch
+
+# Terminal 3: Run contract tests
+pnpm test:contract:watch
+</code></pre>
+<h3>2. Production Deployment</h3>
+<h4>Building for Production</h4>
+<pre><code class="language-bash"># Install dependencies
+pnpm install --prod
+
+# Generate API routes
+pnpm build:api
+
+# Build TypeScript
+pnpm build
+
+# Or combine all
+pnpm build
+</code></pre>
+<h4>Running in Production</h4>
+<pre><code class="language-bash"># Using Node.js
+NODE_ENV=production pnpm start
+
+# Using PM2 (recommended)
+pm2 start dist/index.js --name ce-orchestrator
+
+# Using Docker
+docker-compose up -d
+</code></pre>
+<h3>3. Docker Deployment</h3>
+<h4>Production Docker Compose</h4>
+<pre><code class="language-yaml">version: &quot;3.9&quot;
+
+services:
+  orchestrator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - &quot;${PORT:-9900}:9900&quot;
+    env_file:
+      - .env.local
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/app/data
+    networks:
+      - kai-net
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: &#39;2&#39;
+          memory: 4G
+        reservations:
+          cpus: &#39;1&#39;
+          memory: 2G
+
+networks:
+  kai-net:
+    driver: bridge
+</code></pre>
+<h4>Docker Run Command</h4>
+<pre><code class="language-bash">docker run -d \
+  --name ce-orchestrator \
+  --restart unless-stopped \
+  -p 9900:9900 \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v $(pwd)/data:/app/data \
+  -e NODE_ENV=production \
+  -e JWT_SECRET=your-secret-key \
+  --network kai-net \
+  ce-orchestrator:latest
+</code></pre>
+<h2>Environment Configuration</h2>
+<h3>Required Variables</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PORT</code></td>
+<td>Server port</td>
+<td><code>9900</code></td>
+</tr>
+<tr>
+<td><code>NODE_ENV</code></td>
+<td>Environment mode</td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>JWT_SECRET</code></td>
+<td>JWT signing secret</td>
+<td><strong>Required</strong></td>
+</tr>
+</tbody></table>
+<h3>Optional Variables</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>FRONTEND_URL</code></td>
+<td>CORS allowed origin</td>
+<td><code>*</code></td>
+</tr>
+<tr>
+<td><code>DOCKER_NETWORK</code></td>
+<td>Docker network name</td>
+<td><code>kai-net</code></td>
+</tr>
+<tr>
+<td><code>KAI_BASE_ROOT</code></td>
+<td>Data storage path</td>
+<td><code>/tmp/KaiBase</code></td>
+</tr>
+<tr>
+<td><code>CONTEXT_ENABLED</code></td>
+<td>Enable context manager</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>CONTEXT_MANAGER_URL</code></td>
+<td>Context manager URL</td>
+<td><code>http://localhost:8080</code></td>
+</tr>
+<tr>
+<td><code>ROUND_TABLE_URL</code></td>
+<td>Round Table server URL</td>
+<td>-</td>
+</tr>
+<tr>
+<td><code>LOG_LEVEL</code></td>
+<td>Logging level</td>
+<td><code>info</code></td>
+</tr>
+</tbody></table>
+<h2>Health Checks</h2>
+<h3>HTTP Health Endpoint</h3>
+<pre><code class="language-bash">curl http://localhost:9900/api/health
+</code></pre>
+<p>Response:</p>
+<pre><code class="language-json">{
+  &quot;status&quot;: &quot;healthy&quot;,
+  &quot;timestamp&quot;: &quot;2026-04-17T12:00:00.000Z&quot;,
+  &quot;uptime&quot;: 3600
+}
+</code></pre>
+<h3>Docker Health Check</h3>
+<pre><code class="language-bash">docker inspect --format=&#39;{{.State.Health.Status}}&#39; ce-orchestrator
+</code></pre>
+<h2>Security Checklist</h2>
+<ul>
+<li><input disabled="" type="checkbox"> Change <code>JWT_SECRET</code> to a strong random value</li>
+<li><input disabled="" type="checkbox"> Set <code>NODE_ENV=production</code></li>
+<li><input disabled="" type="checkbox"> Disable <code>DEBUG_MODE</code></li>
+<li><input disabled="" type="checkbox"> Configure <code>FRONTEND_URL</code> for CORS</li>
+<li><input disabled="" type="checkbox"> Use HTTPS in production</li>
+<li><input disabled="" type="checkbox"> Set up proper firewall rules</li>
+<li><input disabled="" type="checkbox"> Regular security updates</li>
+<li><input disabled="" type="checkbox"> Monitor logs for suspicious activity</li>
+</ul>
+<h2>Scaling</h2>
+<h3>Horizontal Scaling</h3>
+<p>Deploy multiple instances behind a load balancer for high availability:</p>
+<pre><code class="language-yaml">services:
+  orchestrator:
+    deploy:
+      replicas: 3
+    # ... other config
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - &quot;80:80&quot;
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - orchestrator
+</code></pre>
+<h2>Backup and Recovery</h2>
+<h3>Data Backup</h3>
+<pre><code class="language-bash"># Backup data directory
+tar -czf backup-$(date +%Y%m%d).tar.gz ./data
+
+# Backup environment configuration
+cp .env.local .env.local.backup
+</code></pre>
+<h3>Restore</h3>
+<pre><code class="language-bash"># Extract backup
+tar -xzf backup-20260417.tar.gz
+
+# Restore environment
+cp .env.local.backup .env.local
+</code></pre>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../entities/api-server.md">API Server</a> - API server entity</li>
+<li><a href="../entities/container-management.md">Container Management</a> - Container management entity</li>
+</ul>
+
+      </div>
+    </main>
+  </div>
+</body>
+</html>

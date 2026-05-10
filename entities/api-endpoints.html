@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Endpoints - AInTandem Orchestrator LLM Wiki</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f5f5f5;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 280px;
+      background: #1a1a2e;
+      color: #fff;
+      padding: 2rem 1rem;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar h1 {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: #4ade80;
+    }
+
+    .sidebar h2 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 1.5rem 0 0.5rem;
+      color: #888;
+    }
+
+    .nav-item {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      color: #ccc;
+      text-decoration: none;
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+      font-size: 0.875rem;
+    }
+
+    .nav-item:hover {
+      background: #2a2a4e;
+      color: #fff;
+    }
+
+    .nav-item.active {
+      background: #4ade80;
+      color: #1a1a2e;
+      font-weight: 500;
+    }
+
+    .main {
+      flex: 1;
+      margin-left: 280px;
+      padding: 3rem 4rem;
+      max-width: 900px;
+    }
+
+    .breadcrumb {
+      color: #666;
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .breadcrumb a {
+      color: #4ade80;
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #1a1a2e;
+    }
+
+    .meta {
+      color: #666;
+      font-size: 0.875rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .content {
+      font-size: 1rem;
+    }
+
+    .content h2 {
+      font-size: 1.5rem;
+      margin: 2rem 0 1rem;
+      color: #1a1a2e;
+    }
+
+    .content h3 {
+      font-size: 1.25rem;
+      margin: 1.5rem 0 0.75rem;
+      color: #1a1a2e;
+    }
+
+    .content p {
+      margin-bottom: 1rem;
+    }
+
+    .content ul, .content ol {
+      margin: 1rem 0 1rem 2rem;
+    }
+
+    .content li {
+      margin-bottom: 0.5rem;
+    }
+
+    .content code {
+      background: #f0f0f0;
+      padding: 0.2rem 0.4rem;
+      border-radius: 0.25rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.875rem;
+    }
+
+    .content pre {
+      background: #1a1a2e;
+      color: #f5f5f5;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    .content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+
+    .content a {
+      color: #4ade80;
+      text-decoration: none;
+    }
+
+    .content a:hover {
+      text-decoration: underline;
+    }
+
+    .content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    .content th, .content td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .content th {
+      background: #f0f0f0;
+      font-weight: 600;
+    }
+
+    .frontmatter {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+    }
+
+    .frontmatter-item {
+      display: flex;
+      margin-bottom: 0.5rem;
+    }
+
+    .frontmatter-label {
+      font-weight: 600;
+      min-width: 120px;
+      color: #166534;
+    }
+
+    .frontmatter-value {
+      color: #333;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 2rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h1>📚 LLM Wiki</h1>
+      <h2>Index</h2><a href="index/00-overview.html" class="nav-item ">Overview</a><a href="index/01-recent-changes.html" class="nav-item ">Recent Changes</a><a href="index/02-quick-reference.html" class="nav-item ">Quick Reference</a><h2>Concepts</h2><a href="concepts/contract-testing.html" class="nav-item ">Contract Testing</a><a href="concepts/deployment.html" class="nav-item ">Deployment</a><a href="concepts/task-progress-tracking.html" class="nav-item ">Task Progress Tracking</a><h2>Entities</h2><a href="entities/api-endpoints.html" class="nav-item active">API Endpoints</a><a href="entities/container-management.html" class="nav-item ">Container Management</a><h2>Summaries</h2><a href="summaries/api-change-notification-summary.html" class="nav-item ">API Change Notification Summary</a><a href="summaries/contract-testing-summary.html" class="nav-item ">Contract Testing Implementation Summary</a><a href="summaries/task-progress-implementation-summary.html" class="nav-item ">Task Progress Tracking Implementation Summary</a>
+    </aside>
+    <main class="main">
+      <nav class="breadcrumb">
+        <a href="index/00-overview.html">Wiki</a> &gt; API Endpoints
+      </nav>
+      <h1>API Endpoints</h1>
+      <div class="meta">
+        Type: <span style="background: #f59e0b; color: white; padding: 0.125rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem;">Entity</span> • Last Updated: 2026-05-10
+      </div>
+      <div class="frontmatter">
+        <div class="frontmatter-item">
+          <span class="frontmatter-label">Type:</span>
+          <span class="frontmatter-value">Entity</span>
+        </div>
+        <div class="frontmatter-item">
+          <span class="frontmatter-label">Last Updated:</span>
+          <span class="frontmatter-value">2026-05-10</span>
+        </div>
+      </div>
+      <div class="content">
+        <h1>API Endpoints</h1>
+<h2>Description</h2>
+<p>API endpoints are the primary interface for interacting with the CE Orchestrator. All endpoints are documented with OpenAPI 3.0 specifications and include authentication requirements, request/response schemas, and error handling documentation.</p>
+<h2>Documentation</h2>
+<h3>Swagger UI (Interactive)</h3>
+<ul>
+<li><strong>Development</strong>: <code>http://localhost:9900/api-docs</code></li>
+<li><strong>Production</strong>: <code>/api-docs</code> endpoint</li>
+<li><strong>Features</strong>: Interactive API testing, request/response examples, &quot;Try it out&quot; functionality</li>
+</ul>
+<h3>ReDoc (Reference)</h3>
+<ul>
+<li><strong>Development</strong>: <code>http://localhost:9900/redoc</code></li>
+<li><strong>Production</strong>: <code>/redoc</code> endpoint</li>
+<li><strong>Features</strong>: Clean, responsive design, three-panel layout, search functionality</li>
+</ul>
+<h3>Static HTML Documentation</h3>
+<pre><code class="language-bash"># Generate standalone HTML documentation
+pnpm build:docs
+# Output: dist/redoc-static.html
+</code></pre>
+<h2>Endpoint Categories</h2>
+<h3>Authentication Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+<th>Auth Required</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>POST</td>
+<td><code>/auth/login</code></td>
+<td>User login</td>
+<td>No</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/auth/refresh</code></td>
+<td>Refresh token</td>
+<td>No</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/auth/verify</code></td>
+<td>Verify token</td>
+<td>No</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/auth/logout</code></td>
+<td>User logout</td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<h3>Workflow Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+<th>Auth Required</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td><code>/workflows</code></td>
+<td>List workflows</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/workflows</code></td>
+<td>Create workflow</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/workflows/{id}</code></td>
+<td>Get workflow</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/workflows/{id}</code></td>
+<td>Update workflow</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/workflows/{id}</code></td>
+<td>Delete workflow</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/workflows/{id}/status</code></td>
+<td>Change status</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/workflows/{id}/executions</code></td>
+<td>Create execution</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/workflows/{id}/versions</code></td>
+<td>List versions</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/workflows/{id}/versions/{version}</code></td>
+<td>Get version</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/workflows/{id}/clone</code></td>
+<td>Clone workflow</td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<h3>Task Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+<th>Auth Required</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>POST</td>
+<td><code>/projects/{projectId}/tasks</code></td>
+<td>Execute task</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/projects/{projectId}/tasks/adhoc</code></td>
+<td>Execute adhoc task</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/projects/{projectId}/tasks/{taskId}</code></td>
+<td>Get task</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/projects/{projectId}/tasks/{taskId}/cancel</code></td>
+<td>Cancel task</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/projects/{projectId}/tasks/{taskId}/context</code></td>
+<td>Get task context</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/projects/{projectId}/task-limits</code></td>
+<td>Get task limits</td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<h3>Container Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+<th>Auth Required</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>POST</td>
+<td><code>/flexy</code></td>
+<td>Create container</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/flexy/{id}</code></td>
+<td>Get container</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/flexy/{id}</code></td>
+<td>Delete container</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/flexy/{id}/start</code></td>
+<td>Start container</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/flexy/{id}/stop</code></td>
+<td>Stop container</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/flexy/operations/{operationId}</code></td>
+<td>Get operation status</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/flexy/operations/{operationId}/cancel</code></td>
+<td>Cancel operation</td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<h3>Organization Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+<th>Auth Required</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td><code>/organizations</code></td>
+<td>List organizations</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/organizations</code></td>
+<td>Create organization</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/organizations/{id}</code></td>
+<td>Get organization</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/organizations/{id}</code></td>
+<td>Update organization</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/organizations/{id}</code></td>
+<td>Delete organization</td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<h3>Workspace Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+<th>Auth Required</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td><code>/workspaces</code></td>
+<td>List workspaces</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/organizations/{organizationId}/workspaces</code></td>
+<td>Create workspace</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/workspaces/{id}</code></td>
+<td>Get workspace</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/workspaces/{id}</code></td>
+<td>Update workspace</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/workspaces/{id}</code></td>
+<td>Delete workspace</td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<h3>Project Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+<th>Auth Required</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td><code>/projects</code></td>
+<td>List projects</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/projects</code></td>
+<td>Create project</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/projects/{id}</code></td>
+<td>Get project</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/projects/{id}</code></td>
+<td>Update project</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/projects/{id}</code></td>
+<td>Delete project</td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<h3>Settings Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+<th>Auth Required</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td><code>/settings</code></td>
+<td>Get user settings</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/settings</code></td>
+<td>Update user settings</td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<h3>Context Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+<th>Auth Required</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td><code>/context/health</code></td>
+<td>Context health check</td>
+<td>No</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/context/info</code></td>
+<td>Context info</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/context/memories</code></td>
+<td>Create memory</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/context/memories/upsert</code></td>
+<td>Upsert memory</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/context/search</code></td>
+<td>Search memories</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/projects/{projectId}/tasks/context/relevant</code></td>
+<td>Get relevant context</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/host/directories</code></td>
+<td>Browse directories</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/context/import/document</code></td>
+<td>Import document</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/context/sync/file</code></td>
+<td>Sync file</td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<h3>Health Check Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+<th>Auth Required</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td><code>/health</code></td>
+<td>Health check</td>
+<td>No</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/health</code></td>
+<td>API health check</td>
+<td>No</td>
+</tr>
+</tbody></table>
+<h2>Authentication</h2>
+<p>All protected endpoints require a valid JWT Bearer token:</p>
+<pre><code class="language-bash">Authorization: Bearer &lt;your-jwt-token&gt;
+</code></pre>
+<p>Public endpoints (no authentication required):</p>
+<ul>
+<li><code>/auth/login</code></li>
+<li><code>/auth/refresh</code></li>
+<li><code>/auth/verify</code></li>
+<li><code>/health</code></li>
+<li><code>/api/health</code></li>
+<li><code>/context/health</code></li>
+</ul>
+<h2>Error Responses</h2>
+<p>All error responses follow a consistent format:</p>
+<pre><code class="language-json">{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;ERROR_CODE&quot;,
+    &quot;message&quot;: &quot;Human-readable error message&quot;,
+    &quot;details&quot;: {}
+  }
+}
+</code></pre>
+<h2>Contract Testing</h2>
+<p>All endpoints are covered by contract tests to ensure API-SDK type consistency. See <a href="../concepts/contract-testing.md">Contract Testing</a> for details.</p>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../concepts/contract-testing.md">Contract Testing</a> - Contract testing concept</li>
+<li><a href="../entities/api-server.md">API Server</a> - API server entity</li>
+</ul>
+
+      </div>
+    </main>
+  </div>
+</body>
+</html>

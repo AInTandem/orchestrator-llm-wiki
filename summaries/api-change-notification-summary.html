@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Change Notification Summary - AInTandem Orchestrator LLM Wiki</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f5f5f5;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 280px;
+      background: #1a1a2e;
+      color: #fff;
+      padding: 2rem 1rem;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar h1 {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: #4ade80;
+    }
+
+    .sidebar h2 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 1.5rem 0 0.5rem;
+      color: #888;
+    }
+
+    .nav-item {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      color: #ccc;
+      text-decoration: none;
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+      font-size: 0.875rem;
+    }
+
+    .nav-item:hover {
+      background: #2a2a4e;
+      color: #fff;
+    }
+
+    .nav-item.active {
+      background: #4ade80;
+      color: #1a1a2e;
+      font-weight: 500;
+    }
+
+    .main {
+      flex: 1;
+      margin-left: 280px;
+      padding: 3rem 4rem;
+      max-width: 900px;
+    }
+
+    .breadcrumb {
+      color: #666;
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .breadcrumb a {
+      color: #4ade80;
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #1a1a2e;
+    }
+
+    .meta {
+      color: #666;
+      font-size: 0.875rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .content {
+      font-size: 1rem;
+    }
+
+    .content h2 {
+      font-size: 1.5rem;
+      margin: 2rem 0 1rem;
+      color: #1a1a2e;
+    }
+
+    .content h3 {
+      font-size: 1.25rem;
+      margin: 1.5rem 0 0.75rem;
+      color: #1a1a2e;
+    }
+
+    .content p {
+      margin-bottom: 1rem;
+    }
+
+    .content ul, .content ol {
+      margin: 1rem 0 1rem 2rem;
+    }
+
+    .content li {
+      margin-bottom: 0.5rem;
+    }
+
+    .content code {
+      background: #f0f0f0;
+      padding: 0.2rem 0.4rem;
+      border-radius: 0.25rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.875rem;
+    }
+
+    .content pre {
+      background: #1a1a2e;
+      color: #f5f5f5;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    .content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+
+    .content a {
+      color: #4ade80;
+      text-decoration: none;
+    }
+
+    .content a:hover {
+      text-decoration: underline;
+    }
+
+    .content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    .content th, .content td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .content th {
+      background: #f0f0f0;
+      font-weight: 600;
+    }
+
+    .frontmatter {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+    }
+
+    .frontmatter-item {
+      display: flex;
+      margin-bottom: 0.5rem;
+    }
+
+    .frontmatter-label {
+      font-weight: 600;
+      min-width: 120px;
+      color: #166534;
+    }
+
+    .frontmatter-value {
+      color: #333;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 2rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h1>📚 LLM Wiki</h1>
+      <h2>Index</h2><a href="index/00-overview.html" class="nav-item ">Overview</a><a href="index/01-recent-changes.html" class="nav-item ">Recent Changes</a><a href="index/02-quick-reference.html" class="nav-item ">Quick Reference</a><h2>Concepts</h2><a href="concepts/contract-testing.html" class="nav-item ">Contract Testing</a><a href="concepts/deployment.html" class="nav-item ">Deployment</a><a href="concepts/task-progress-tracking.html" class="nav-item ">Task Progress Tracking</a><h2>Entities</h2><a href="entities/api-endpoints.html" class="nav-item ">API Endpoints</a><a href="entities/container-management.html" class="nav-item ">Container Management</a><h2>Summaries</h2><a href="summaries/api-change-notification-summary.html" class="nav-item active">API Change Notification Summary</a><a href="summaries/contract-testing-summary.html" class="nav-item ">Contract Testing Implementation Summary</a><a href="summaries/task-progress-implementation-summary.html" class="nav-item ">Task Progress Tracking Implementation Summary</a>
+    </aside>
+    <main class="main">
+      <nav class="breadcrumb">
+        <a href="index/00-overview.html">Wiki</a> &gt; API Change Notification Summary
+      </nav>
+      <h1>API Change Notification Summary</h1>
+      <div class="meta">
+        Type: <span style="background: #10b981; color: white; padding: 0.125rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem;">Summary</span> • Last Updated: 2026-05-10
+      </div>
+      <div class="frontmatter">
+        <div class="frontmatter-item">
+          <span class="frontmatter-label">Type:</span>
+          <span class="frontmatter-value">Summary</span>
+        </div>
+        <div class="frontmatter-item">
+          <span class="frontmatter-label">Last Updated:</span>
+          <span class="frontmatter-value">2026-05-10</span>
+        </div>
+      </div>
+      <div class="content">
+        <h1>API Change Notification Summary</h1>
+<h2>Executive Summary</h2>
+<p>API change notification system was implemented to provide structured, versioned API change tracking and notification to consumers, ensuring smooth API evolution without breaking existing integrations.</p>
+<h2>Implementation Date</h2>
+<p><strong>Implementation</strong>: 2026-05-10 (Planned)</p>
+<h2>Key Achievements</h2>
+<h3>Features Implemented</h3>
+<ol>
+<li><p><strong>Change Log System</strong></p>
+<ul>
+<li>Structured change tracking</li>
+<li>Versioned API changes</li>
+<li>Breaking change identification</li>
+</ul>
+</li>
+<li><p><strong>Notification Mechanism</strong></p>
+<ul>
+<li>Webhook notifications</li>
+<li>Email alerts</li>
+<li>In-app notifications</li>
+</ul>
+</li>
+<li><p><strong>Change Classification</strong></p>
+<ul>
+<li>Breaking changes</li>
+<li>Non-breaking changes</li>
+<li>Deprecation notices</li>
+<li>Feature additions</li>
+</ul>
+</li>
+<li><p><strong>Migration Guides</strong></p>
+<ul>
+<li>Step-by-step migration instructions</li>
+<li>Code examples</li>
+<li>Before/after comparisons</li>
+</ul>
+</li>
+</ol>
+<h2>Technical Implementation</h2>
+<h3>Change Log Structure</h3>
+<pre><code class="language-typescript">interface APIChange {
+  id: string;
+  version: string;
+  type: &#39;breaking&#39; | &#39;non-breaking&#39; | &#39;deprecation&#39; | &#39;feature&#39;;
+  endpoint: string;
+  description: string;
+  breakingDetails?: {
+    reason: string;
+    migrationPath: string;
+  };
+  affectedSDKs?: string[];
+  releaseDate: string;
+  deprecatedSince?: string;
+  removalDate?: string;
+}
+</code></pre>
+<h3>Notification Endpoints</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GET</td>
+<td><code>/api/changes</code></td>
+<td>List all changes</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/api/changes/{version}</code></td>
+<td>Get changes for version</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/api/notifications/webhook</code></td>
+<td>Register webhook</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/api/notifications/webhook/{id}</code></td>
+<td>Unregister webhook</td>
+</tr>
+</tbody></table>
+<h2>Change Categories</h2>
+<h3>Breaking Changes</h3>
+<p>Changes that require consumer action:</p>
+<ul>
+<li>Endpoint removal</li>
+<li>Parameter removal or type change</li>
+<li>Response structure change</li>
+<li>Authentication method change</li>
+</ul>
+<h3>Non-Breaking Changes</h3>
+<p>Changes that don&#39;t require consumer action:</p>
+<ul>
+<li>New endpoints</li>
+<li>New optional parameters</li>
+<li>Additional response fields</li>
+<li>Performance improvements</li>
+</ul>
+<h3>Deprecations</h3>
+<p>Features that will be removed:</p>
+<ul>
+<li>Deprecated endpoints</li>
+<li>Deprecated parameters</li>
+<li>Deprecated response fields</li>
+</ul>
+<h3>Feature Additions</h3>
+<p>New functionality:</p>
+<ul>
+<li>New endpoints</li>
+<li>New parameters</li>
+<li>New features</li>
+</ul>
+<h2>Benefits</h2>
+<ol>
+<li><strong>Proactive Communication</strong> - Consumers are notified before changes</li>
+<li><strong>Smooth Migration</strong> - Clear migration paths provided</li>
+<li><strong>Version Management</strong> - Track changes by version</li>
+<li><strong>Breaking Change Awareness</strong> - Clearly identify breaking changes</li>
+<li><strong>Deprecation Tracking</strong> - Monitor deprecation timelines</li>
+</ol>
+<h2>Best Practices</h2>
+<ol>
+<li><strong>Early Notification</strong> - Notify consumers at least 2 weeks before breaking changes</li>
+<li><strong>Clear Documentation</strong> - Provide detailed migration guides</li>
+<li><strong>Backward Compatibility</strong> - Maintain backward compatibility when possible</li>
+<li><strong>Version Semantics</strong> - Follow semantic versioning</li>
+<li><strong>Deprecation Period</strong> - Provide adequate deprecation period</li>
+</ol>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../concepts/contract-testing.md">Contract Testing</a> - Contract testing concept</li>
+<li><a href="../entities/api-endpoints.md">API Endpoints</a> - API endpoints entity</li>
+</ul>
+
+      </div>
+    </main>
+  </div>
+</body>
+</html>

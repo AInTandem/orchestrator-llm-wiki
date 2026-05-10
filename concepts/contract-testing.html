@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contract Testing - AInTandem Orchestrator LLM Wiki</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f5f5f5;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 280px;
+      background: #1a1a2e;
+      color: #fff;
+      padding: 2rem 1rem;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar h1 {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: #4ade80;
+    }
+
+    .sidebar h2 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 1.5rem 0 0.5rem;
+      color: #888;
+    }
+
+    .nav-item {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      color: #ccc;
+      text-decoration: none;
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+      font-size: 0.875rem;
+    }
+
+    .nav-item:hover {
+      background: #2a2a4e;
+      color: #fff;
+    }
+
+    .nav-item.active {
+      background: #4ade80;
+      color: #1a1a2e;
+      font-weight: 500;
+    }
+
+    .main {
+      flex: 1;
+      margin-left: 280px;
+      padding: 3rem 4rem;
+      max-width: 900px;
+    }
+
+    .breadcrumb {
+      color: #666;
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .breadcrumb a {
+      color: #4ade80;
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #1a1a2e;
+    }
+
+    .meta {
+      color: #666;
+      font-size: 0.875rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .content {
+      font-size: 1rem;
+    }
+
+    .content h2 {
+      font-size: 1.5rem;
+      margin: 2rem 0 1rem;
+      color: #1a1a2e;
+    }
+
+    .content h3 {
+      font-size: 1.25rem;
+      margin: 1.5rem 0 0.75rem;
+      color: #1a1a2e;
+    }
+
+    .content p {
+      margin-bottom: 1rem;
+    }
+
+    .content ul, .content ol {
+      margin: 1rem 0 1rem 2rem;
+    }
+
+    .content li {
+      margin-bottom: 0.5rem;
+    }
+
+    .content code {
+      background: #f0f0f0;
+      padding: 0.2rem 0.4rem;
+      border-radius: 0.25rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.875rem;
+    }
+
+    .content pre {
+      background: #1a1a2e;
+      color: #f5f5f5;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    .content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+
+    .content a {
+      color: #4ade80;
+      text-decoration: none;
+    }
+
+    .content a:hover {
+      text-decoration: underline;
+    }
+
+    .content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    .content th, .content td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .content th {
+      background: #f0f0f0;
+      font-weight: 600;
+    }
+
+    .frontmatter {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+    }
+
+    .frontmatter-item {
+      display: flex;
+      margin-bottom: 0.5rem;
+    }
+
+    .frontmatter-label {
+      font-weight: 600;
+      min-width: 120px;
+      color: #166534;
+    }
+
+    .frontmatter-value {
+      color: #333;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 2rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h1>📚 LLM Wiki</h1>
+      <h2>Index</h2><a href="index/00-overview.html" class="nav-item ">Overview</a><a href="index/01-recent-changes.html" class="nav-item ">Recent Changes</a><a href="index/02-quick-reference.html" class="nav-item ">Quick Reference</a><h2>Concepts</h2><a href="concepts/contract-testing.html" class="nav-item active">Contract Testing</a><a href="concepts/deployment.html" class="nav-item ">Deployment</a><a href="concepts/task-progress-tracking.html" class="nav-item ">Task Progress Tracking</a><h2>Entities</h2><a href="entities/api-endpoints.html" class="nav-item ">API Endpoints</a><a href="entities/container-management.html" class="nav-item ">Container Management</a><h2>Summaries</h2><a href="summaries/api-change-notification-summary.html" class="nav-item ">API Change Notification Summary</a><a href="summaries/contract-testing-summary.html" class="nav-item ">Contract Testing Implementation Summary</a><a href="summaries/task-progress-implementation-summary.html" class="nav-item ">Task Progress Tracking Implementation Summary</a>
+    </aside>
+    <main class="main">
+      <nav class="breadcrumb">
+        <a href="index/00-overview.html">Wiki</a> &gt; Contract Testing
+      </nav>
+      <h1>Contract Testing</h1>
+      <div class="meta">
+        Type: <span style="background: #3b82f6; color: white; padding: 0.125rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem;">Concept</span> • Last Updated: 2026-05-10
+      </div>
+      <div class="frontmatter">
+        <div class="frontmatter-item">
+          <span class="frontmatter-label">Type:</span>
+          <span class="frontmatter-value">Concept</span>
+        </div>
+        <div class="frontmatter-item">
+          <span class="frontmatter-label">Last Updated:</span>
+          <span class="frontmatter-value">2026-05-10</span>
+        </div>
+      </div>
+      <div class="content">
+        <h1>Contract Testing</h1>
+<h2>Definition</h2>
+<p>Contract testing is a testing methodology that ensures API responses match SDK type definitions and SDK requests comply with API validation rules. It validates the &quot;contract&quot; between services without requiring full integration tests.</p>
+<h2>Purpose</h2>
+<p>Contract testing serves as the critical mechanism for type consistency between the CE Orchestrator API and its SDK. Through automated testing, it verifies:</p>
+<ol>
+<li><strong>API Response Consistency</strong> - API responses match the type definitions expected by the SDK</li>
+<li><strong>Request Validation</strong> - SDK requests comply with API validation rules</li>
+<li><strong>Error Response Standardization</strong> - Error responses follow consistent formats across all endpoints</li>
+</ol>
+<h2>Implementation in CE Orchestrator</h2>
+<h3>Type Definitions</h3>
+<p><strong>Location</strong>: <code>src/types/api-responses.ts</code></p>
+<p>Unified API response types are defined for all major entities:</p>
+<ul>
+<li><code>WorkflowResponse</code></li>
+<li><code>SettingsResponse</code></li>
+<li><code>TaskResponse</code></li>
+<li><code>ContainerResponse</code></li>
+<li><code>OrganizationResponse</code></li>
+<li><code>WorkspaceResponse</code></li>
+<li><code>ProjectResponse</code></li>
+<li><code>ContextResponse</code></li>
+<li><code>HealthCheckResponse</code></li>
+</ul>
+<h3>Test Framework</h3>
+<p><strong>Location</strong>: <code>tests/contract/utils.ts</code></p>
+<p>The <code>ContractTestSuite</code> utility class provides:</p>
+<ul>
+<li><code>testEndpoint&lt;T&gt;()</code> - Tests API endpoint contracts</li>
+<li><code>testErrorResponse()</code> - Tests error response contracts</li>
+<li><code>getSummary()</code> - Gets test summary</li>
+<li><code>printSummary()</code> - Prints test summary</li>
+</ul>
+<h3>Test Coverage</h3>
+<p><strong>11 Contract Test Files</strong> covering 50 API endpoints:</p>
+<table>
+<thead>
+<tr>
+<th>API Category</th>
+<th>Endpoints</th>
+<th>Test File</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Workflow API</td>
+<td>7</td>
+<td><code>workflow-contract.test.ts</code></td>
+</tr>
+<tr>
+<td>Settings API</td>
+<td>2</td>
+<td><code>settings-contract.test.ts</code></td>
+</tr>
+<tr>
+<td>Auth API</td>
+<td>4</td>
+<td><code>auth-contract.test.ts</code></td>
+</tr>
+<tr>
+<td>Task API</td>
+<td>5</td>
+<td><code>task-contract.test.ts</code></td>
+</tr>
+<tr>
+<td>Container API</td>
+<td>6</td>
+<td><code>container-contract.test.ts</code></td>
+</tr>
+<tr>
+<td>Organization API</td>
+<td>5</td>
+<td><code>organization-contract.test.ts</code></td>
+</tr>
+<tr>
+<td>Workspace API</td>
+<td>8</td>
+<td><code>workspace-contract.test.ts</code></td>
+</tr>
+<tr>
+<td>Context API</td>
+<td>9</td>
+<td><code>context-contract.test.ts</code></td>
+</tr>
+</tbody></table>
+<h2>Advanced Testing</h2>
+<h3>Boundary Conditions</h3>
+<ul>
+<li>String length boundaries (1 char, 200 chars, Unicode)</li>
+<li>Numeric boundaries (limit=0, limit=999999)</li>
+<li>Array boundaries (empty array, large arrays)</li>
+<li>Optional field handling</li>
+<li>Null/Undefined handling</li>
+<li>Deep nested objects</li>
+<li>ID format boundaries</li>
+<li>Timestamp format validation</li>
+</ul>
+<h3>Concurrent Requests</h3>
+<ul>
+<li>Parallel read operations</li>
+<li>Parallel write operations</li>
+<li>Mixed read/write operations</li>
+<li>Parallel updates to same resource</li>
+<li>Rate limiting and throttling</li>
+<li>Race condition handling</li>
+<li>Authentication token reuse</li>
+</ul>
+<h3>Performance Testing</h3>
+<ul>
+<li>GET request performance (simple/complex)</li>
+<li>POST request performance (create operations)</li>
+<li>PUT request performance (update operations)</li>
+<li>DELETE request performance (delete operations)</li>
+<li>Concurrent request performance</li>
+<li>Large response handling</li>
+<li>Authentication performance</li>
+<li>Memory efficiency checks</li>
+</ul>
+<h2>CI/CD Integration</h2>
+<p><strong>Location</strong>: <code>.github/workflows/contract-tests.yml</code></p>
+<p>Contract tests run automatically:</p>
+<ul>
+<li>On push/PR to main/develop branches</li>
+<li>Manual trigger support</li>
+<li>Complete test result upload and reporting</li>
+</ul>
+<h2>Benefits</h2>
+<ol>
+<li><strong>Type Safety</strong> - Ensures API and SDK types remain consistent</li>
+<li><strong>Early Detection</strong> - Catches breaking changes before deployment</li>
+<li><strong>Documentation</strong> - Serves as living documentation of API contracts</li>
+<li><strong>Confidence</strong> - Provides confidence in API stability</li>
+</ol>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../entities/api-endpoints.md">API Endpoints</a> - API entity documentation</li>
+<li><a href="../summaries/contract-testing-summary.md">Contract Testing Summary</a> - Implementation results</li>
+</ul>
+
+      </div>
+    </main>
+  </div>
+</body>
+</html>

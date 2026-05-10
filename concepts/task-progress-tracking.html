@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Progress Tracking - AInTandem Orchestrator LLM Wiki</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f5f5f5;
+    }
+
+    .container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 280px;
+      background: #1a1a2e;
+      color: #fff;
+      padding: 2rem 1rem;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar h1 {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: #4ade80;
+    }
+
+    .sidebar h2 {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 1.5rem 0 0.5rem;
+      color: #888;
+    }
+
+    .nav-item {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      color: #ccc;
+      text-decoration: none;
+      border-radius: 0.375rem;
+      transition: all 0.2s;
+      font-size: 0.875rem;
+    }
+
+    .nav-item:hover {
+      background: #2a2a4e;
+      color: #fff;
+    }
+
+    .nav-item.active {
+      background: #4ade80;
+      color: #1a1a2e;
+      font-weight: 500;
+    }
+
+    .main {
+      flex: 1;
+      margin-left: 280px;
+      padding: 3rem 4rem;
+      max-width: 900px;
+    }
+
+    .breadcrumb {
+      color: #666;
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .breadcrumb a {
+      color: #4ade80;
+      text-decoration: none;
+    }
+
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #1a1a2e;
+    }
+
+    .meta {
+      color: #666;
+      font-size: 0.875rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .content {
+      font-size: 1rem;
+    }
+
+    .content h2 {
+      font-size: 1.5rem;
+      margin: 2rem 0 1rem;
+      color: #1a1a2e;
+    }
+
+    .content h3 {
+      font-size: 1.25rem;
+      margin: 1.5rem 0 0.75rem;
+      color: #1a1a2e;
+    }
+
+    .content p {
+      margin-bottom: 1rem;
+    }
+
+    .content ul, .content ol {
+      margin: 1rem 0 1rem 2rem;
+    }
+
+    .content li {
+      margin-bottom: 0.5rem;
+    }
+
+    .content code {
+      background: #f0f0f0;
+      padding: 0.2rem 0.4rem;
+      border-radius: 0.25rem;
+      font-family: 'Courier New', monospace;
+      font-size: 0.875rem;
+    }
+
+    .content pre {
+      background: #1a1a2e;
+      color: #f5f5f5;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    .content pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+
+    .content a {
+      color: #4ade80;
+      text-decoration: none;
+    }
+
+    .content a:hover {
+      text-decoration: underline;
+    }
+
+    .content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    .content th, .content td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .content th {
+      background: #f0f0f0;
+      font-weight: 600;
+    }
+
+    .frontmatter {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+    }
+
+    .frontmatter-item {
+      display: flex;
+      margin-bottom: 0.5rem;
+    }
+
+    .frontmatter-label {
+      font-weight: 600;
+      min-width: 120px;
+      color: #166534;
+    }
+
+    .frontmatter-value {
+      color: #333;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 2rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h1>📚 LLM Wiki</h1>
+      <h2>Index</h2><a href="index/00-overview.html" class="nav-item ">Overview</a><a href="index/01-recent-changes.html" class="nav-item ">Recent Changes</a><a href="index/02-quick-reference.html" class="nav-item ">Quick Reference</a><h2>Concepts</h2><a href="concepts/contract-testing.html" class="nav-item ">Contract Testing</a><a href="concepts/deployment.html" class="nav-item ">Deployment</a><a href="concepts/task-progress-tracking.html" class="nav-item active">Task Progress Tracking</a><h2>Entities</h2><a href="entities/api-endpoints.html" class="nav-item ">API Endpoints</a><a href="entities/container-management.html" class="nav-item ">Container Management</a><h2>Summaries</h2><a href="summaries/api-change-notification-summary.html" class="nav-item ">API Change Notification Summary</a><a href="summaries/contract-testing-summary.html" class="nav-item ">Contract Testing Implementation Summary</a><a href="summaries/task-progress-implementation-summary.html" class="nav-item ">Task Progress Tracking Implementation Summary</a>
+    </aside>
+    <main class="main">
+      <nav class="breadcrumb">
+        <a href="index/00-overview.html">Wiki</a> &gt; Task Progress Tracking
+      </nav>
+      <h1>Task Progress Tracking</h1>
+      <div class="meta">
+        Type: <span style="background: #3b82f6; color: white; padding: 0.125rem 0.5rem; border-radius: 0.25rem; font-size: 0.75rem;">Concept</span> • Last Updated: 2026-05-10
+      </div>
+      <div class="frontmatter">
+        <div class="frontmatter-item">
+          <span class="frontmatter-label">Type:</span>
+          <span class="frontmatter-value">Concept</span>
+        </div>
+        <div class="frontmatter-item">
+          <span class="frontmatter-label">Last Updated:</span>
+          <span class="frontmatter-value">2026-05-10</span>
+        </div>
+      </div>
+      <div class="content">
+        <h1>Task Progress Tracking</h1>
+<h2>Definition</h2>
+<p>Task progress tracking is a real-time mechanism that provides granular visibility into long-running task execution, allowing frontends to monitor task status and intermediate results without frequent polling.</p>
+<h2>Purpose</h2>
+<p>The CE Orchestrator implements comprehensive task progress tracking to address limitations in the original system:</p>
+<ol>
+<li><strong>Real-time Updates</strong> - WebSocket-based push instead of polling</li>
+<li><strong>Granular Progress</strong> - Step-by-step progress with percentages</li>
+<li><strong>Container Operation Tracking</strong> - Asynchronous container operation monitoring</li>
+<li><strong>Intermediate Results</strong> - Streaming output and artifacts during execution</li>
+</ol>
+<h2>Architecture</h2>
+<h3>Progress Events</h3>
+<p><strong>Location</strong>: <code>src/services/progress-emitter.ts</code></p>
+<p>Progress events follow a structured format:</p>
+<pre><code class="language-typescript">interface ProgressEvent {
+  eventId: string;
+  timestamp: string;
+  taskId: string;
+  projectId: string;
+  type: &#39;task_queued&#39; | &#39;task_started&#39; | &#39;step_progress&#39; | &#39;output&#39; | &#39;artifact&#39; | &#39;task_completed&#39; | &#39;task_failed&#39; | &#39;task_cancelled&#39;;
+  data: {
+    status?: string;
+    progress?: {
+      current: number;
+      total: number;
+      percentage: number;
+      message: string;
+    };
+    output?: string;
+    artifacts?: TaskArtifact[];
+    error?: string;
+    metrics?: {
+      elapsed: number;
+      estimatedRemaining?: number;
+    };
+  };
+}
+</code></pre>
+<h3>WebSocket Connection</h3>
+<p><strong>Location</strong>: <code>src/controllers/ProgressController.ts</code></p>
+<p>Clients connect via WebSocket:</p>
+<pre><code>WS /api/progress/subscribe/{projectId}
+</code></pre>
+<h3>Subscription Format</h3>
+<pre><code class="language-json">{
+  &quot;action&quot;: &quot;subscribe&quot;,
+  &quot;taskIds&quot;: [&quot;task-1&quot;, &quot;task-2&quot;],
+  &quot;types&quot;: [&quot;task_started&quot;, &quot;step_progress&quot;, &quot;task_completed&quot;]
+}
+</code></pre>
+<h2>Implementation Phases</h2>
+<h3>Phase 1: WebSocket Progress Service</h3>
+<ul>
+<li>Progress event emitter</li>
+<li>WebSocket connection controller</li>
+<li>Route registration</li>
+</ul>
+<h3>Phase 2: Enhanced Task Model</h3>
+<ul>
+<li>Granular progress reporting</li>
+<li>Step-by-step tracking</li>
+<li>Intermediate output capture</li>
+</ul>
+<h3>Phase 3: Async Container Operations</h3>
+<ul>
+<li>Async container start/stop</li>
+<li>Operation ID tracking</li>
+<li>Container operation progress</li>
+</ul>
+<h3>Phase 4: Workflow Progress Tracking</h3>
+<ul>
+<li>Workflow phase tracking</li>
+<li>Multi-stage execution monitoring</li>
+<li>Phase completion events</li>
+</ul>
+<h3>Phase 5: Frontend Integration</h3>
+<ul>
+<li>API documentation</li>
+<li>Client connection examples</li>
+<li>UI component recommendations</li>
+</ul>
+<h2>Task Model Extensions</h2>
+<pre><code class="language-typescript">interface TaskExecution {
+  // ... existing fields
+  steps?: TaskStep[];
+  currentStep?: number;
+  progress?: {
+    percentage: number;
+    message: string;
+    lastUpdate: string;
+  };
+  metrics?: {
+    cpuUsage?: number;
+    memoryUsage?: number;
+  };
+}
+</code></pre>
+<h2>API Changes</h2>
+<h3>Container Operations</h3>
+<p>Synchronous operations remain for quick actions, long operations become asynchronous:</p>
+<pre><code class="language-typescript">// Async container operation
+POST /flexy/containers/{id}/start-async -&gt; { operationId: string }
+
+// Query operation status
+GET /flexy/operations/{operationId} -&gt; { status, progress }
+</code></pre>
+<h3>Workflow Progress</h3>
+<pre><code class="language-typescript">interface WorkflowProgress {
+  workflowId: string;
+  status: &#39;running&#39; | &#39;paused&#39; | &#39;completed&#39; | &#39;failed&#39;;
+  currentPhase: number;
+  phases: Array&lt;{
+    id: string;
+    name: string;
+    status: &#39;pending&#39; | &#39;running&#39; | &#39;completed&#39; | &#39;failed&#39;;
+    progress: number;
+    message: string;
+  }&gt;;
+}
+</code></pre>
+<h2>Configuration</h2>
+<h3>Environment Variables</h3>
+<pre><code class="language-bash"># WebSocket Configuration
+PROGRESS_WS_ENABLED=true
+PROGRESS_WS_MAX_CONNECTIONS=100
+PROGRESS_WS_HEARTBEAT_INTERVAL=30000
+
+# Progress Reporting
+PROGRESS_REPORT_INTERVAL=1000    # milliseconds
+PROGRESS_OUTPUT_CHUNK_SIZE=2048  # characters
+</code></pre>
+<h2>Security Considerations</h2>
+<ol>
+<li><strong>Authentication</strong> - WebSocket connections require Bearer Token</li>
+<li><strong>Authorization</strong> - Users can only subscribe to projects they have access to</li>
+<li><strong>Connection Limits</strong> - Max concurrent connections per user</li>
+<li><strong>Rate Limiting</strong> - Connection rate limiting</li>
+</ol>
+<h2>Performance Considerations</h2>
+<ol>
+<li><strong>Event Emitter Pattern</strong> - No polling overhead</li>
+<li><strong>Batch Updates</strong> - Reduce network load by batching progress updates</li>
+<li><strong>Auto-Reconnect</strong> - Client-side reconnection handling</li>
+<li><strong>Compression</strong> - Compress large output data</li>
+</ol>
+<h2>Backward Compatibility</h2>
+<ul>
+<li>Existing polling-based API endpoints remain unchanged</li>
+<li>WebSocket push is an optional feature</li>
+<li>Synchronous container operations preserved</li>
+<li>Async versions are additions, not replacements</li>
+</ul>
+<h2>Related Concepts</h2>
+<ul>
+<li><a href="../entities/task-execution.md">Task Execution</a> - Task execution entity</li>
+<li><a href="../summaries/task-progress-implementation-summary.md">Task Progress Implementation Summary</a> - Implementation results</li>
+</ul>
+
+      </div>
+    </main>
+  </div>
+</body>
+</html>
